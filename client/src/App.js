@@ -1,18 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import FooterBar from "./components/footer";
-import About from "./components/About";
-// import Contact from "./components/contact";
-import Login from "./components/Loginpage";
+import Navbar from "./Components/Navbar";
+import FooterBar from "./Components/Footer";
+import Dashboard from "./Dashboard";
 
 function App() {
   return (
     <div>
-     <Navbar />
-     <About />
+      <Navbar />
+      <Dashboard />
       <FooterBar />
-      <Login />
     </div>
   );
 }

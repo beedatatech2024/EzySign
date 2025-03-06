@@ -1,3 +1,10 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #eef1f7;
+  transition: background 0.3s ease-in-out;
+}
+
 .App {
   text-align: center;
 }
