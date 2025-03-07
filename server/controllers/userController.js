@@ -4,17 +4,34 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 const registerUser = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
+    
     try {
         const existingUser = await User.findByEmail(email);
         if (existingUser) return res.status(400).json({ message: "Email already exists" });
 
-        await User.createUser(name, email, password);
-        res.status(201).json({ message: "User registered successfully" });
+        await User.createUser(name, email, password, role);
+        res.status(201).json({ message: "User registered successfully with role: " + role });
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
+
+const updateUserRole = async (req, res) => {
+    const { userId, newRole } = req.body;
+    
+    if (req.user.role !== 'super_admin' && req.user.role !== 'enterprise_admin') {
+        return res.status(403).json({ message: "Permission Denied" });
+    }
+
+    try {
+        await User.updateUserRole(userId, newRole);
+        res.status(200).json({ message: `User role updated to ${newRole}` });
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
+
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -44,4 +61,4 @@ const getUserProfile = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, getUserProfile };
+module.exports = { registerUser, loginUser, getUserProfile, updateUserRole };
