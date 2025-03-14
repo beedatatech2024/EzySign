@@ -47,3 +47,32 @@
 .sidebar-text {
     font-size: 16px;
 }
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+        align-items: center;
+        padding-left: 0%;
+    }
+
+    .sidebar-title {
+        display: none;
+    }
+
+    .sidebar-text {
+        display: none;
+    }
+
+    .sidebar-menu {
+        width: 100%;
+        align-items: center;
+    }
+
+    .sidebar-item {
+        justify-content: center;
+    }
+
+    .sidebar-icon {
+        font-size: 24px;
+    }
+}

@@ -59,6 +59,11 @@
     color: #09c3db; /* Highlight color */
 }
 
+.login-link {
+    text-decoration: none;
+    color: white;
+}
+
 /* Buttons */
 .nav-button {
     padding: 8px 16px;

@@ -5,7 +5,6 @@ import { TiGroup } from "react-icons/ti";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LuLogOut } from "react-icons/lu";
 
-
 import "./index.css";
 
 const Sidebar = () => {
@@ -22,19 +21,19 @@ const Sidebar = () => {
                     <span className="sidebar-text">Pending Signatures</span>
                 </li>
                 <li className="sidebar-item">
-                <FaUpload className="sidebar-icon"/>
+                    <FaUpload className="sidebar-icon"/>
                     <span className="sidebar-text">Upload Forms</span>
                 </li>
                 <li className="sidebar-item">
-                <TiGroup className="sidebar-icon"/>
+                    <TiGroup className="sidebar-icon"/>
                     <span className="sidebar-text">Teams</span>
                 </li>
                 <li className="sidebar-item">
-                <IoSettingsOutline className="sidebar-icon"/>
+                    <IoSettingsOutline className="sidebar-icon"/>
                     <span className="sidebar-text">Settings</span>
                 </li>
                 <li className="sidebar-item">
-                <LuLogOut className="sidebar-icon"/>
+                    <LuLogOut className="sidebar-icon"/>
                     <span className="sidebar-text">Logout</span>
                 </li>
             </ul>

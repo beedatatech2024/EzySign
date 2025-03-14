@@ -2,14 +2,14 @@ const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 
 const User = {
-    createUser: async (name, email, password, role = 'user') => {
+    createUser: async (fullName , email, password, role = 'user') => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         return new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO users (name, email, password, role_id) 
                  VALUES (?, ?, ?, (SELECT id FROM roles WHERE name = ?))`,
-                [name, email, hashedPassword, role],
+                [fullName, email, hashedPassword, role],
                 (err, result) => {
                     if (err) reject(err);
                     resolve(result);
@@ -26,8 +26,13 @@ const User = {
                  WHERE email = ?`, 
                 [email], 
                 (err, result) => {
-                    if (err) reject(err);
-                    resolve(result[0]);
+                    if (err) {
+                        reject(err);
+                    } else if (result.length === 0) {
+                        resolve(null);
+                    } else {
+                        resolve(result[0]);
+                    }
                 }
             );
         });
