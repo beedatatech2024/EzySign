@@ -48,6 +48,11 @@
     font-size: 16px;
 }
 
+.sidebar-link{
+    text-decoration: none;
+    color: white;
+}
+
 @media (max-width: 768px) {
     .sidebar {
         width: 60px;

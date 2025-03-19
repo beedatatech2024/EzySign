@@ -14,8 +14,6 @@ export const loginUser = async (loginDetails, navigate) => {
   
       Cookies.set("jwtToken", token, { expires: 30 });
   
-      localStorage.setItem("senderData", JSON.stringify(userData));
-  
       navigate("/dashboard", { replace: true });
       window.location.reload();
   
@@ -25,8 +23,20 @@ export const loginUser = async (loginDetails, navigate) => {
       throw error.response?.data || error;
     }
   };
+
+  export const getUserDetails = async (userId) => {
+    
+    try {
+      const response = await axiosInstance.get(`/user-details/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Get User Error:", error.response?.data?.message || error.message);
+      throw error.response?.data || error;
+    }
+  };
   
   
+
   export const registerUser = async (registerDetails) => {
     try {
       const response = await axiosInstance.post("/register", registerDetails);

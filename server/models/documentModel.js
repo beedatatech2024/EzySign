@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
 const Document = {
-    upload: (ownerId, fileName, filePath) => {
+    upload: (userId, title, filePath, status = 'active') => {
         return new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO documents (owner_id, file_name, file_path) VALUES (?, ?, ?)`,
-                [ownerId, fileName, filePath],
+                `INSERT INTO documents (user_id, title, file_path, status, created_at) VALUES (?, ?, ?, ?, NOW())`,
+                [userId, title, filePath, status],
                 (err, result) => {
                     if (err) reject(err);
                     resolve(result);
@@ -28,10 +28,10 @@ const Document = {
         });
     },
 
-    getDocumentsByUser: (userId) => {
+    getDocumentsByUserId: (userId) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * FROM documents WHERE owner_id = ?`,
+                `SELECT * FROM documents WHERE user_id = ?`,
                 [userId],
                 (err, result) => {
                     if (err) reject(err);

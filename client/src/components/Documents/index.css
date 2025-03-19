@@ -62,6 +62,22 @@
     color: rgb(61, 61, 61);
 }
 
+.add-signature-btn{
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.documents-title-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 /* View Button */
 .view-btn {
     background: #009ffd;
@@ -75,4 +91,9 @@
 
 .view-btn:hover {
     background: #5d7fa0;
+}
+
+.documents-link{
+    text-decoration: none;
+    color: white;
 }

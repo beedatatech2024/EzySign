@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { uploadDocument } from "../../api/documentApi";
 
 const DocumentUploadForm = ({ onClose }) => {
     const [file, setFile] = useState(null);
@@ -18,11 +19,28 @@ const DocumentUploadForm = ({ onClose }) => {
         e.preventDefault();
     };
 
-    const handleSubmit = () => {
-        console.log("File:", file);
-        console.log("Message:", message);
-        onClose();
+    const handleSubmit = async () => {
+        if (!file) {
+            alert("Please select a file");
+            return;
+          }
+      
+          const formData = new FormData();
+          formData.append("document", file);
+          formData.append("message", message);
+      
+          try {
+            const res = await uploadDocument(formData);
+            console.log("Upload Response:", res);
+            alert("Document uploaded successfully");
+            onClose();
+          } catch (err) {
+            console.error("Upload Error:", err);
+            alert("Failed to upload document");
+          }
     };
+
+    
 
     return (
         <div className="popup-overlay">

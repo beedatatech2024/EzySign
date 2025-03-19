@@ -34,7 +34,7 @@ const assignSigners = async (req, res) => {
 // Get User Documents
 const getUserDocuments = async (req, res) => {
     try {
-        const documents = await Document.getDocumentsByUser(req.user.id);
+        const documents = await Document.getDocumentsByUserId(req.params.id);
         res.status(200).json(documents);
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message });

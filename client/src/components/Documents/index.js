@@ -1,10 +1,46 @@
-import React from 'react';
+import React, {useEffect, useState } from 'react';
 import './index.css';
+import { getDocuments } from '../../api/documentApi';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
+import { baseUrl } from '../../Config/constants';
 
 const Documents = () => {
+    const [documents, setDocuments] = useState([]);
+
+    useEffect(() => {
+        const userId = jwtDecode(Cookies.get('jwtToken')).id;
+    
+        const fetchDocuments = async () => {
+            try {
+                const documentsData = await getDocuments(userId);
+                if (Array.isArray(documentsData)) {
+                    setDocuments(documentsData);
+                } else {
+                    console.error("Unexpected API response format:", documentsData);
+                }
+            } catch (error) {
+                console.error('Error fetching documents:', error);
+            }
+        };    
+    
+        fetchDocuments();
+    }, []);
+
+    const getDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    };
+
+    const handleView = (filePath) => {
+        window.open(`${baseUrl}/${filePath}`, '_blank');
+    };
+    
+
     return (
         <section className="recent-documents">
-            <h2 className="documents-title">Signatures</h2>
+            <h2 className="documents-title">Documents</h2>
             <table className="documents-table">
                 <thead className="documents-thead"> 
                     <tr className="documents-header-row">
@@ -15,30 +51,16 @@ const Documents = () => {
                     </tr>
                 </thead>
                 <tbody className="documents-tbody">
-                    <tr className="documents-row status-signed">
-                        <td className="documents-data documents-name">Contract_XYZ.pdf</td>
-                        <td className="documents-data documents-status">Signed</td>
-                        <td className="documents-data documents-date">March 1, 2025</td>
-                        <td className="documents-data documents-action">
-                            <button className="view-btn">View</button>
-                        </td>
-                    </tr>
-                    <tr className="documents-row status-pending">
-                        <td className="documents-data documents-name">proposal_ABC.pdf</td>
-                        <td className="documents-data documents-status">Pending</td>
-                        <td className="documents-data documents-date">March 3, 2025</td>
-                        <td className="documents-data documents-action">
-                            <button className="view-btn">View</button>
-                        </td>
-                    </tr>
-                    <tr className="documents-row status-expired">
-                        <td className="documents-data documents-name">Service_Agreement.pdf</td>
-                        <td className="documents-data documents-status">Expired</td>
-                        <td className="documents-data documents-date">March 5, 2025</td>
-                        <td className="documents-data documents-action">
-                            <button className="view-btn">View</button>
-                        </td>
-                    </tr>
+                    {documents.map((document) => (
+                        <tr key={document.id} className={`documents-row ${"status-" + document.status}` }>
+                            <td className="documents-data documents-name">{document.title}</td>
+                            <td className="documents-data documents-status">{document.status}</td>
+                            <td className="documents-data documents-date">{getDate(document.created_at)}</td>
+                            <td className="documents-data documents-action">
+                                <button onClick={() => handleView(document.file_path)} className="view-btn">View</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </section>

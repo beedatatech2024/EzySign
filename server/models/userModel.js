@@ -38,6 +38,26 @@ const User = {
         });
     },
 
+    findById: (userId) => {
+        return new Promise((resolve, reject) => {
+            db.query(
+                `SELECT users.*, roles.name as role FROM users 
+                 JOIN roles ON users.role_id = roles.id 
+                 WHERE users.id = ?`, 
+                [userId], 
+                (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else if (result.length === 0) {
+                        resolve(null);
+                    } else {
+                        resolve(result[0]);
+                    }
+                }
+            );
+        });
+    },
+
     updateUserRole: (userId, newRole) => {
         return new Promise((resolve, reject) => {
             db.query(
