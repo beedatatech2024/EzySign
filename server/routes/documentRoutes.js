@@ -1,7 +1,8 @@
 const express = require('express');
 const multer = require('multer');
-const { uploadDocument, assignSigners, getUserDocuments, signDocument, downloadDocument,  } = require('../controllers/documentController');
+const { uploadDocument, assignSigners, getUserDocuments, signDocument, downloadDocument, getAssignedDocuments,  } = require('../controllers/documentController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
+const { getDocumentBySignerId } = require('../models/documentModel');
 
 const router = express.Router();
 
@@ -23,5 +24,6 @@ router.post('/assign-signers', protect, authorize(['document_owner', 'team_admin
 router.get('/my-documents/:id', protect, getUserDocuments);
 router.post('/sign', protect, authorize(['user', 'team_member']), signDocument);
 router.get('/download/:id', protect, downloadDocument);
+router.get('/document-by-signer/:signerId', protect, getAssignedDocuments);
 
 module.exports = router;

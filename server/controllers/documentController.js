@@ -5,10 +5,9 @@ const fs = require('fs');
 // Upload Document
 const uploadDocument = async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
-
     try {
         const filePath = req.file.path.replace(/\\/g, '/');
-        await Document.upload(req.user.id, req.file.filename, filePath);
+        await Document.upload(req.user.id, req.body.signerUser, req.file.filename, filePath);
         res.status(201).json({ message: "Document uploaded successfully" });
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message });
@@ -41,6 +40,15 @@ const getUserDocuments = async (req, res) => {
     }
 };
 
+const getAssignedDocuments = async (req, res) => {
+    try {
+        const documents = await Document.getDocumentsBySignerId(req.params.signerId);
+        res.status(200).json(documents);
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
+
 // Mark Document as Signed
 const signDocument = async (req, res) => {
     const { documentId } = req.body;
@@ -48,7 +56,6 @@ const signDocument = async (req, res) => {
     try {
         await Document.markSignerAsSigned(documentId, req.user.id);
 
-        // Check if all signers have signed
         const remainingSigners = await Document.getSignersPending(documentId);
         if (remainingSigners.length === 0) {
             await Document.updateStatus(documentId, 'signed');
@@ -73,4 +80,4 @@ const downloadDocument = async (req, res) => {
     }
 };
 
-module.exports = { uploadDocument, assignSigners, getUserDocuments, signDocument, downloadDocument };
+module.exports = { uploadDocument, assignSigners, getUserDocuments, signDocument, downloadDocument, getAssignedDocuments };

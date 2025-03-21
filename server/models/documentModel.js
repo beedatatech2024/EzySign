@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
 const Document = {
-    upload: (userId, title, filePath, status = 'active') => {
+    upload: (userId, signerUser, title, filePath, status = 'pending') => {
         return new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO documents (user_id, title, file_path, status, created_at) VALUES (?, ?, ?, ?, NOW())`,
-                [userId, title, filePath, status],
+                `INSERT INTO documents (user_id, signer_id, title, file_path, status, created_at) VALUES (?, ?, ?, ?, ?, NOW())`,
+                [userId, signerUser, title, filePath, status],
                 (err, result) => {
                     if (err) reject(err);
                     resolve(result);
@@ -54,6 +54,19 @@ const Document = {
         });
     },
 
+    getDocumentsBySignerId: (signerId) => {
+        return new Promise((resolve, reject) => {
+            db.query(
+                `SELECT * FROM documents WHERE signer_id = ?`,
+                [signerId],
+                (err, result) => {
+                    if (err) reject(err);
+                    resolve(result);
+                }
+            );
+        });
+    },
+
     updateStatus: (documentId, status) => {
         return new Promise((resolve, reject) => {
             db.query(
@@ -80,5 +93,6 @@ const Document = {
         });
     }
 };
+
 
 module.exports = Document;

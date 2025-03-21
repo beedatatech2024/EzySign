@@ -8,6 +8,7 @@ import "./index.css";
 import Teams from "../Components/Teams";
 import PendingSignatures from "../Components/PendingSignatures";
 import Profile from "../Components/Profile";
+import Signature from "../Components/Signature";
 
 const Dashboard = () => {
     const location = useLocation();
@@ -23,6 +24,8 @@ const Dashboard = () => {
                         <Route path="/teams" element={<Teams />} />
                         <Route path="/pending" element={<PendingSignatures />} />
                         <Route path="/settings" element={<Profile />} />
+                        <Route path="/signature" element={<Signature />} />
+
                     </Routes>
                 </main>
             </div>

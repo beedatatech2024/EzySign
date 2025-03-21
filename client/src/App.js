@@ -13,7 +13,6 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
-        
         <Route element={<Secure />}>
           <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="/add-signature" element={<DocumentSigner />} />

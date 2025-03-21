@@ -78,6 +78,18 @@ const getUserProfile = async (req, res) => {
     }
 };
 
+const getUsersByRole = async (req, res) => {
+    try {
+        const users = await User.findUserByRole(req.params.roleId);
+        
+        res.status(200).json(users);
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+        console.log(err);
+        
+    }
+};
+
 const getUserDetails = async (req, res) => {
     try {
         const user = await User.findById(req.params.userId);
@@ -90,4 +102,4 @@ const getUserDetails = async (req, res) => {
 };
 
 
-module.exports = { registerUser, loginUser, getUserProfile, updateUserRole, getUserDetails};
+module.exports = { registerUser, loginUser, getUserProfile, updateUserRole, getUserDetails, getUsersByRole};

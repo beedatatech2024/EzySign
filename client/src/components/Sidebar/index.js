@@ -3,6 +3,7 @@ import { FaHourglass } from "react-icons/fa6";
 import { FaUpload } from "react-icons/fa";
 import { TiGroup } from "react-icons/ti";
 import { IoSettingsOutline } from "react-icons/io5";
+import { AiOutlineSignature } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
 import "./index.css";
 import { Link, useLocation } from "react-router-dom";
@@ -66,6 +67,18 @@ const Sidebar = () => {
           >
             <TiGroup className="sidebar-icon" />
             <span className="sidebar-text">Teams</span>
+          </li>
+        </Link>
+        <Link className="sidebar-link" to="/dashboard/signature">
+          <li
+            className={
+              location.pathname === "/dashboard/signature"
+                ? "sidebar-item active"
+                : "sidebar-item"
+            }
+          >
+            <AiOutlineSignature className="sidebar-icon" />
+            <span className="sidebar-text">Signature</span>
           </li>
         </Link>
         <Link className="sidebar-link" to="/dashboard/settings">
