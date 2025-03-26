@@ -30,8 +30,8 @@ const Profile = () => {
     <div className="main-content">
       <div className="profile-container">
         <img
-          src="https://www.profilebakery.com/wp-content/uploads/2024/05/Profile-picture-created-with-ai.jpeg"
-          alt="Profile Picture"
+          src="images/profile-demo-image.jpeg"
+          alt="Profile-Icon"
           className="profile-img"
         />
         <div className="profile-name">{user.fullName}</div>

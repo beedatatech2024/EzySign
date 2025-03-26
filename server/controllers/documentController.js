@@ -1,14 +1,30 @@
 const Document = require('../models/documentModel');
 const path = require('path');
 const fs = require('fs');
+const sendEmail = require("../utils/emailService");
+const getEmailTemplate = require('../utils/getEmailTamplate');
 
 // Upload Document
 const uploadDocument = async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+
     try {
         const filePath = req.file.path.replace(/\\/g, '/');
         await Document.upload(req.user.id, req.body.signerUser, req.file.filename, filePath);
-        res.status(201).json({ message: "Document uploaded successfully" });
+
+        const signerUserEmail = req.body.signerUserEmail; 
+        console.log(signerUserEmail);
+        
+
+        if (signerUserEmail) {
+            const subject = "New Document Assigned for Signing";
+            const text = `You have been assigned a new document for signing. Access it here: ${filePath}`;
+            const html = getEmailTemplate(filePath)
+
+            await sendEmail(signerUserEmail, subject, text, html);
+        }
+
+        res.status(201).json({ message: "Document uploaded successfully and email sent!" });
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message });
     }
@@ -49,9 +65,11 @@ const getAssignedDocuments = async (req, res) => {
     }
 };
 
+
+
 // Mark Document as Signed
 const signDocument = async (req, res) => {
-    const { documentId } = req.body;
+    const { documentId } = req.body;       
 
     try {
         await Document.markSignerAsSigned(documentId, req.user.id);
@@ -66,6 +84,7 @@ const signDocument = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
+
 
 // Download Document
 const downloadDocument = async (req, res) => {

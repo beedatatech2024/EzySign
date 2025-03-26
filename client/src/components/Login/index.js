@@ -11,10 +11,9 @@ const LoginForm = ({handleTabClick}) => {
     email: "",
     password: "",
   });
-  const [errorMessage, setErrorMessage] = useState(null); // For server-side errors
+  const [errorMessage, setErrorMessage] = useState(null); 
   const navigate = useNavigate();
 
-  // Handle input changes
   const handleChange = (e) => {
     setLoginDetails({
       ...loginDetails,

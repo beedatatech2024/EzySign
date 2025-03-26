@@ -7,8 +7,6 @@ import { getUserDetails } from "../../api/authApi";
 
 const PendingSignatures = () => {
   const [signerDocuments, setSignerDocuments] = useState([]);
-  const [userDetails, setUserDetails] = useState({});
-  const [userNames, setUserNames] = useState({});
 
   useEffect(() => {
     const fetchUserAndDocuments = async () => {
@@ -28,7 +26,6 @@ const PendingSignatures = () => {
         console.log("User Data:", userData);
         console.log("Documents Data:", documentsData);
 
-        setUserDetails(userData);
 
         if (Array.isArray(documentsData)) {
           setSignerDocuments(documentsData);
@@ -49,7 +46,6 @@ const PendingSignatures = () => {
           });
 
           console.log("User Map:", userMap);
-          setUserNames(userMap);
         } else {
           console.error("Unexpected API response format:", documentsData);
         }

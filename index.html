@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .paragraph{
+            font-family: Arial, sans-serif;
+            color: green;
+            font-size: 100px;
+        }
+    </style>
+    
+    <script>
+        const constainerEl = document.createElement("div");
+
+        const headingEl = document.createElement("h1");
+        headingEl.textContent = "Hello World";
+
+        constainerEl.appendChild(headingEl);
+
+        const paragraphEl = document.createElement('p');
+        paragraphEl.textContent = "This is a paragraph";
+        paragraphEl.classList.add("paragraph");
+
+        const buttonEl = document.createElement("button");
+        buttonEl.textContent = "Click to color change";
+
+        const colorsArray = ["red", "green", "blue", "yellow"];
+
+        let colorIndex = 0;
+        
+
+
+
+        function onClickColorChange(){
+
+            paragraphEl.style.color = colorsArray[colorIndex];
+            if (colorIndex < colorsArray.length - 1) {
+                colorIndex += 1;
+            }else{
+                colorIndex = 0;
+            }
+            
+        }
+
+        buttonEl.onclick = onClickColorChange;
+
+        constainerEl.appendChild(buttonEl);
+
+        constainerEl.appendChild(paragraphEl);
+        document.body.appendChild(constainerEl);
+
+    </script>
+</body>
+</html>

@@ -14,7 +14,7 @@ const Navbar = () => {
             <li className="nav-item">Contact</li>
             <li className="nav-item">Service</li>
           </ul>
-          <Link className="login-link" to={"/auth"}>
+          <Link className="login-link" to={"/"}>
             <button className="nav-button login-btn">Log in</button>
           </Link>
         </div>

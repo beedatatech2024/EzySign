@@ -1,42 +1,44 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { uploadDocument } from "../../api/documentApi";
 import { getUsersByRole } from "../../api/authApi";
 import "./index.css";
 
 const DocumentUploadForm = ({ onClose }) => {
   const [file, setFile] = useState(null);
-  const [signerUsers, setSignerUsers] = useState([]);
-  const [signerUser, setSignerUser] = useState([]);
+  const [signerUsers, setSignerUsers] = useState([]); // List of signer users
+  const [signerUser, setSignerUser] = useState(""); // Selected signer user ID
+  const [signerUserEmail, setSignerUserEmail] = useState(""); // Selected signer's email
 
+  // Fetch signer users when component loads
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const [userData] = await Promise.all([getUsersByRole(5)]);
-
+        const userData = await getUsersByRole(5);
         setSignerUsers(userData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching signer users:", error);
       }
     };
 
     fetchUserData();
   }, []);
 
+  // Handle file selection
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
+  // Handle file drag and drop
   const handleDrop = (e) => {
     e.preventDefault();
-    const droppedFile = e.dataTransfer.files[0];
-    setFile(droppedFile);
+    setFile(e.dataTransfer.files[0]);
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
   };
 
+  // Handle document upload
   const handleSubmit = async () => {
     if (!file) {
       alert("Please select a file");
@@ -46,15 +48,20 @@ const DocumentUploadForm = ({ onClose }) => {
       alert("Please select a signer user");
       return;
     }
+    if (!signerUserEmail) {
+      alert("Signer user's email is missing");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("document", file);
     formData.append("signerUser", signerUser);
+    formData.append("signerUserEmail", signerUserEmail); 
 
     try {
       const res = await uploadDocument(formData);
       console.log("Upload Response:", res);
-      alert("Document uploaded successfully");
+      alert("Document uploaded and email sent successfully");
       onClose();
     } catch (err) {
       console.error("Upload Error:", err);
@@ -65,7 +72,7 @@ const DocumentUploadForm = ({ onClose }) => {
   return (
     <div className="popup-overlay">
       <div className="popup-content">
-        <h3>Upload Document</h3>
+        <h3 className="popup-title">Upload Document</h3>
 
         {/* Drag and Drop Area */}
         <div
@@ -84,7 +91,7 @@ const DocumentUploadForm = ({ onClose }) => {
             {file ? (
               file.name
             ) : (
-              <label htmlFor="file-input">
+              <label className="upload-label" htmlFor="file-input">
                 Drag & Drop or Click to{" "}
                 <span className="upload-label">Upload</span>
               </label>
@@ -92,16 +99,16 @@ const DocumentUploadForm = ({ onClose }) => {
           </p>
         </div>
 
-        {/* Message Input */}
-        {/* <textarea
-          placeholder="Add a message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="message-input"
-        ></textarea> */}
-
+        {/* Signer Selection Dropdown */}
         <select
-          onChange={(e) => setSignerUser(e.target.value)}
+          onChange={(e) => {
+            const selectedUserId = e.target.value;
+            setSignerUser(selectedUserId);
+
+            // Find the selected user's email
+            const selectedUser = signerUsers.find(user => String(user.id) === selectedUserId);
+            setSignerUserEmail(selectedUser ? selectedUser.email : ""); 
+          }}
           className="assign-select"
           required
         >

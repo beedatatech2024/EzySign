@@ -25,7 +25,6 @@ const Dashboard = () => {
                         <Route path="/pending" element={<PendingSignatures />} />
                         <Route path="/settings" element={<Profile />} />
                         <Route path="/signature" element={<Signature />} />
-
                     </Routes>
                 </main>
             </div>

@@ -10,6 +10,8 @@ const SignaturePad = ({ onSave }) => {
         onSave(dataURL);
     };
 
+    
+
     return (
         <div className="sig-container">
             <h3 className="sig-title">Draw Your Signature</h3>
